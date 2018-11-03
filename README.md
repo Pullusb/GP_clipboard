@@ -1,6 +1,8 @@
 # GP clipboard
 Blender Addon (2.79) - Grease pencil clipboard to copy/cut/paste strokes across layers and blends
 
+**[Download latest](https://github.com/Pullusb/GPclipboard/raw/master/GPclipboard.py)** (right click, save Target as) 
+
 ---
 
 ### Description:

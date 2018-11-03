@@ -14,6 +14,8 @@ GP clipboard use the paper clip of your OS to store grease pencil strokes.
 This mean you can even paste your copied stroke in a text file for later re-use.
 But be carefull not to overwrite you clipboard if you have a stroke you must not lose. (This will not happen if you're using a clipboard history manager [like Ditto (windows only)](https://ditto-cp.sourceforge.io/), wich I highly recommend ^^)
 
+Thanks to Mathieu Chaptel for the help with matrices handling and features thinking.
+
 ---
 
 **Note for better workflow**  

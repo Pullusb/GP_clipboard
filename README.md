@@ -14,7 +14,9 @@ GP clipboard use the paper clip of your OS to store grease pencil strokes.
 This mean you can even paste your copied stroke in a text file for later re-use.
 But be carefull not to overwrite you clipboard if you have a stroke you must not lose. (This will not happen if you're using a clipboard history manager [like Ditto (windows only)](https://ditto-cp.sourceforge.io/), wich I highly recommend ^^)
 
-*Note for better workflow:*
+---
+
+**Note for better workflow:**
 If you want to assign a shortcut to be more efficient than the basic button clicking you can setup custom shortcuts :
  - In the user preference > inputs:
  - unfold the "3Dview" section (or "Window" section if you want the shortcut to be active in multiple editor)

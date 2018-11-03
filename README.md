@@ -4,8 +4,8 @@ Blender Addon (2.79) - Grease pencil clipboard to copy/cut/paste strokes across 
 ---
 
 ### Description:
-The default copy/paste of grease pencil strokes does not allow to copy between layers, this one does and even between blend files.
-The cutting is also more user friendly.
+The default copy/paste of grease pencil strokes does not allow to copy between layers, this one does and even between blend files.  
+The cutting is also more user friendly.  
 Button are localised in View3D > Toolbar > Grease Pencil > GP clipboard
 
 GP clipboard use the paper clip of your OS to store grease pencil strokes.
@@ -18,7 +18,7 @@ If you want to assign a shortcut to be more efficient than the basic button clic
  - unfold the "3Dview" section (or "Window" section if you want the shortcut to be active in multiple editor)
  - scroll down and click the `add new`button
  - enter the keymap of your choice in the key field
- - In the text field enter one of the following IDname (corresponding to operator):
+ - In the text field enter one of the following IDname (corresponding to operator):  
  `gp.copy_strokes`, `gp.cut_strokes`, `gp.paste_strokes`
  
 

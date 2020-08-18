@@ -1,7 +1,9 @@
 # GP clipboard
-Blender Addon (2.79) - Grease pencil clipboard to copy/cut/paste strokes across layers and blends
+Blender Addon - Grease pencil clipboard to copy/cut/paste strokes across layers and blends
 
-**[Download latest](https://github.com/Pullusb/GPclipboard/raw/master/GPclipboard.py)** (right click, save Target as) 
+**[Download latest](https://github.com/Pullusb/GP_clipboard/archive/master.zip)** 
+
+**[Download old (2.79)](https://github.com/Pullusb/GP_clipboard/raw/master/GP_clipboard279.py)** (right click, save Target as) 
 
 ---
 
@@ -37,3 +39,11 @@ If you want to assign a shortcut to be more efficient than the basic button clic
   - use_current_frame = True (on paste) -> when pasting use current (key)frame if exists (False: Create a new one at current time if needed)
 
 - Maybe add a checkbox in preferences to setup shortcuts (this is ready, but difficult to choose a relevant keymap without conflict...)
+
+---
+
+### Changelog:
+
+1.0.0 - 2020-08-18:
+
+- First working update for 2.83

@@ -4,7 +4,7 @@ bl_info = {
     "name": "GP clipboard",
     "description": "Copy/Cut/Paste Grease Pencil strokes to/from OS clipboard across layers and blends",
     "author": "Samuel Bernou",
-    "version": (1, 0, 0),
+    "version": (1, 1, 0),
     "blender": (2, 83, 0),
     "location": "View3D > Toolbar > Grease Pencil > GP clipboard",
     "warning": "",
@@ -32,19 +32,19 @@ def convertAttr(Attr):
     else:
         return(Attr)
 
-# """ def getMatrix (layer) :
-#     matrix = mathutils.Matrix.Identity(4)
+def getMatrix (layer) :
+    matrix = mathutils.Matrix.Identity(4)
 
-#     if layer.is_parented:
-#         if layer.parent_type == 'BONE':
-#             object = layer.parent
-#             bone = object.pose.bones[layer.parent_bone]
-#             matrix = bone.matrix @ object.matrix_world
-#             matrix = matrix.copy() @ layer.matrix_inverse
-#         else :
-#             matrix = layer.parent.matrix_world * layer.matrix_inverse
+    if layer.is_parented:
+        if layer.parent_type == 'BONE':
+            object = layer.parent
+            bone = object.pose.bones[layer.parent_bone]
+            matrix = bone.matrix @ object.matrix_world
+            matrix = matrix.copy() @ layer.matrix_inverse
+        else :
+            matrix = layer.parent.matrix_world @ layer.matrix_inverse
 
-#     return matrix.copy() """
+    return matrix.copy()
 
 # def get_object_matrix(obj):
 #     return obj.matrix_world.copy()
@@ -58,9 +58,9 @@ def dump_gp_point(p, l, obj):
     #    pdic[att] = convertAttr(getattr(p, att))
     if l.parent:
         mat = getMatrix(l)
-        pdic['co'] = convertAttr(mat @ getattr(p,'co'))
+        pdic['co'] = convertAttr(obj.matrix_world @ mat @ getattr(p,'co'))
     else:
-        pdic['co'] = convertAttr(obj.matrix_world.inverted() @ getattr(p,'co'))
+        pdic['co'] = convertAttr(obj.matrix_world @ getattr(p,'co'))
     pdic['pressure'] = convertAttr(getattr(p,'pressure'))
     # pdic['select'] = convertAttr(getattr(p,'select'))# need selection ? 
     pdic['strength'] = convertAttr(getattr(p,'strength'))
@@ -214,7 +214,7 @@ def copycut_strokes(layers=None, copy=True, keep_empty=True):# (mayber allow fil
 
 
 
-def add_stroke(s, frame, layer):
+def add_stroke(s, frame, layer, obj):
     '''add stroke on a given frame, (layer is for parentage setting)'''
     #print(3*'-',s)
     ns = frame.strokes.new()
@@ -225,8 +225,10 @@ def add_stroke(s, frame, layer):
     pts_to_add = len(s['points'])
     #print(pts_to_add, 'points')#dbg
 
-
     ns.points.add(pts_to_add)
+    
+    ob_mat_inv = obj.matrix_world.inverted()
+
     #patch pressure 1
     pressure_flat_list = [di['pressure'] for di in s['points']] #get all pressure flatened
 
@@ -236,14 +238,18 @@ def add_stroke(s, frame, layer):
             for k, v in pt.items():
                 if k == 'co':
                     setattr(ns.points[i], k, v)
-                    ns.points[i].co = mat * ns.points[i].co
+                    ns.points[i].co = ob_mat_inv @ mat @ ns.points[i].co# invert of object * invert of layer * coordinate
                 else:
                     setattr(ns.points[i], k, v)
     else:
         for i, pt in enumerate(s['points']):
             for k, v in pt.items():
-                #print(k,v)
-                setattr(ns.points[i], k, v)
+                if k == 'co':
+                    setattr(ns.points[i], k, v)
+                    ns.points[i].co = ob_mat_inv @ ns.points[i].co# invert of object * coordinate
+                else:
+                    setattr(ns.points[i], k, v)
+
 
     #patch pressure 2
     ns.points.foreach_set('pressure', pressure_flat_list)
@@ -278,7 +284,7 @@ def add_multiple_strokes(stroke_list, layer=None, use_current_frame=True):
             #or active exists but not aligned scene.current with use_current_frame disabled
             target_frame = layer.frames.new(fnum)
 
-        add_stroke(s, target_frame, layer)
+        add_stroke(s, target_frame, layer, obj)
         '''
         for s in stroke_data:
             add_stroke(s, target_frame)
@@ -372,7 +378,6 @@ class GPCLIP_OT_paste_strokes(bpy.types.Operator):
         try:
             data = json.loads(bpy.context.window_manager.clipboard)
         except:
-        #:
             mess = 'Clipboard does not contain drawing data (load error)'
             self.report({'ERROR'}, mess)
             return {"CANCELLED"}

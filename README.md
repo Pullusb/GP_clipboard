@@ -38,11 +38,16 @@ If you want to assign a shortcut to be more efficient than the basic button clic
   - keep_empty = True (on cut) -> When all strokes are cutted the (key)frame is leaved empty (False : frame is deleted if no strokes left)
   - use_current_frame = True (on paste) -> when pasting use current (key)frame if exists (False: Create a new one at current time if needed)
 
-- Maybe add a checkbox in preferences to setup shortcuts (this is ready, but difficult to choose a relevant keymap without conflict...)
+- Maybe add a checkbox in preferences to setup shortcuts in GP only (`ctrl+ shift + C/V`)
 
 ---
 
 ### Changelog:
+
+
+1.1.0 - 2020-08-24:
+
+- Big bugfix, Paste in place now working for normal and parented layers
 
 1.0.0 - 2020-08-18:
 

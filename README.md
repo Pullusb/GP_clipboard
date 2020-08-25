@@ -8,28 +8,37 @@ Blender Addon - Grease pencil clipboard to copy/cut/paste strokes across layers 
 ---
 
 ### Description:
-The default copy/paste of grease pencil strokes does not allow to copy between layers, this one does and even between blend files.  
+The default copy/paste of grease pencil strokes copy strokes using the coordinate relative to the object.
+In some cases it's usefull to copy "In place" (using world coordinate of strokes)   
 The cutting is also more user friendly.  
-Button are localised in View3D > Toolbar > Grease Pencil > GP clipboard
+
+Cut and Copy works accross multiple layers, Paste is only made on active layer.
+
+You can also copy entires layers>frames (bake the stroke position if object is animated).
+
+Button are localised in View3D > Toolbar > GPencil > GP clipboard
 
 GP clipboard use the paper clip of your OS to store grease pencil strokes.
-This mean you can even paste your copied stroke in a text file for later re-use.
+This mean you can even paste your copied stroke in another blend or in a text file for later re-use.
 But be carefull not to overwrite you clipboard if you have a stroke you must not lose. (This will not happen if you're using a clipboard history manager [like Ditto (windows only)](https://ditto-cp.sourceforge.io/), wich I highly recommend ^^)
 
-Thanks to [Mathieu Chaptel](https://vimeo.com/user1760436) for the help with matrices handling and features thinking.
+Thanks to [Mathieu Chaptel](https://vimeo.com/user1760436) for the discussions on core features.
 
 ---
 
-**Note for better workflow**  
-If you want to assign a shortcut to be more efficient than the basic button clicking you can setup custom shortcuts :
+**Note for workflow**
+Cut/Copy/Paste are automatically keymapped on `ctrl + shift + X/C/V`  
+
+If you want to assign another shortcut :
  - In the user preference > inputs:
  - unfold the "3Dview" section (or "Window" section if you want the shortcut to be active in multiple editor)
  - scroll down and click the `add new`button
  - enter the keymap of your choice in the key field
  - In the text field enter one of the following IDname (corresponding to operator):  
  `gp.copy_strokes`, `gp.cut_strokes`, `gp.paste_strokes`
+  
+ - to map multi layers copy-paste use `gp.copy_multi_strokes` and `gp.paste_multi_strokes`
  
-
 ---
 
 ### Todo:
@@ -38,17 +47,21 @@ If you want to assign a shortcut to be more efficient than the basic button clic
   - keep_empty = True (on cut) -> When all strokes are cutted the (key)frame is leaved empty (False : frame is deleted if no strokes left)
   - use_current_frame = True (on paste) -> when pasting use current (key)frame if exists (False: Create a new one at current time if needed)
 
-- Maybe add a checkbox in preferences to setup shortcuts in GP only (`ctrl+ shift + C/V`)
+- Maybe add a checkbox in preferences to disable auto-shortcut
 
 ---
 
 ### Changelog:
 
 
-1.1.0 - 2020-08-24:
+1.2.0:
+
+- Feat: copy a selection of layers with object transform baking
+
+1.1.0:
 
 - Big bugfix, Paste in place now working for normal and parented layers
 
-1.0.0 - 2020-08-18:
+1.0.0:
 
 - First working update for 2.83

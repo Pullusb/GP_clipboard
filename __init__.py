@@ -15,7 +15,7 @@ bl_info = {
     "name": "GP clipboard",
     "description": "Copy/Cut/Paste Grease Pencil strokes to/from OS clipboard across layers and blends",
     "author": "Samuel Bernou",
-    "version": (1, 2, 0),
+    "version": (1, 3, 0),
     "blender": (2, 83, 0),
     "location": "View3D > Toolbar > Gpencil > GP clipboard",
     "warning": "",
@@ -622,6 +622,40 @@ class GPCLIP_PT_clipboard_ui(bpy.types.Panel):
         layout.operator('gp.copy_multi_strokes', text='Copy layers', icon='COPYDOWN')
         layout.operator('gp.paste_multi_strokes', text='Paste layers', icon='PASTEDOWN')
 
+## Addons Preferences Update Panel
+def update_panel(self, context):
+    try:
+        bpy.utils.unregister_class(GPCLIP_PT_clipboard_ui)
+    except:
+        pass
+    GPCLIP_PT_clipboard_ui.bl_category = get_addon_prefs().category
+    bpy.utils.register_class(GPCLIP_PT_clipboard_ui)
+
+class GPCLIP_addon_prefs(bpy.types.AddonPreferences):
+    bl_idname = __name__ # os.path.splitext(__name__)[0]
+
+    category : bpy.props.StringProperty(
+        name="Category",
+        description="Choose a name for the category of the panel",
+        default="Gpencil",
+        update=update_panel)
+
+    def draw(self, context):
+            layout = self.layout
+            ## TAB CATEGORY 
+            box = layout.box()
+            row = box.row(align=True)
+            row.label(text="Panel Category:")
+            row.prop(self, "category", text="")
+
+
+def get_addon_prefs():
+    import os
+    addon_name = os.path.splitext(__name__)[0]
+    addon_prefs = bpy.context.preferences.addons[addon_name].preferences
+    return (addon_prefs)
+
+
 ###---TEST zone
 
 """
@@ -685,13 +719,19 @@ GPCLIP_OT_paste_strokes,
 GPCLIP_OT_copy_multi_strokes,
 GPCLIP_OT_paste_multi_strokes,
 GPCLIP_PT_clipboard_ui,
+GPCLIP_addon_prefs,
 )
 
 def register():
     for cl in classes:
         bpy.utils.register_class(cl)
+
+    ## update tab name with update in pref file (passing addon_prefs)
+    update_panel(get_addon_prefs(), bpy.context)
+
     ## make scene propery for empty key preservation and bake movement for layers...
     register_keymaps()
+
 
 def unregister():
     unregister_keymaps()

@@ -54,6 +54,11 @@ If you want to assign another shortcut :
 ### Changelog:
 
 
+
+1.3.0:
+
+- Feat: addon prefs, option to change the tab name
+
 1.2.0:
 
 - Feat: copy a selection of layers with object transform baking

@@ -54,6 +54,9 @@ If you want to assign another shortcut :
 ### Changelog:
 
 
+1.3.1:
+
+- fix: Bug in keymap register that could affect other addon's keymap
 
 1.3.0:
 

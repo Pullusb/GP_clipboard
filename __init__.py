@@ -15,7 +15,7 @@ bl_info = {
     "name": "GP clipboard",
     "description": "Copy/Cut/Paste Grease Pencil strokes to/from OS clipboard across layers and blends",
     "author": "Samuel Bernou",
-    "version": (1, 3, 0),
+    "version": (1, 3, 1),
     "blender": (2, 83, 0),
     "location": "View3D > Toolbar > Gpencil > GP clipboard",
     "warning": "",
@@ -697,18 +697,20 @@ def register_keymaps():
 
     kmi = km.keymap_items.new("gp.copy_strokes", type = "C", value = "PRESS", ctrl=True, shift=True)
     kmi.repeat = False
+    addon_keymaps.append((km, kmi))
+
     kmi = km.keymap_items.new("gp.cut_strokes", type = "X", value = "PRESS", ctrl=True, shift=True)
     kmi.repeat = False
+    addon_keymaps.append((km, kmi))
+
     kmi = km.keymap_items.new("gp.paste_strokes", type = "V", value = "PRESS", ctrl=True, shift=True)
     kmi.repeat = False
-    addon_keymaps.append(km)
+    addon_keymaps.append((km, kmi))
 
 def unregister_keymaps():
     wm = bpy.context.window_manager
-    for km in addon_keymaps:
-        for kmi in km.keymap_items:
-            km.keymap_items.remove(kmi)
-        wm.keyconfigs.addon.keymaps.remove(km)
+    for km, kmi in addon_keymaps:
+        km.keymap_items.remove(kmi)
     addon_keymaps.clear()
 
 
@@ -734,9 +736,9 @@ def register():
 
 
 def unregister():
-    unregister_keymaps()
     for cl in reversed(classes):
         bpy.utils.unregister_class(cl)
+    unregister_keymaps()
 
 if __name__ == "__main__":
     register()

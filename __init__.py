@@ -15,7 +15,7 @@ bl_info = {
     "name": "GP clipboard",
     "description": "Copy/Cut/Paste Grease Pencil strokes to/from OS clipboard across layers and blends",
     "author": "Samuel Bernou",
-    "version": (1, 3, 1),
+    "version": (1, 3, 2),
     "blender": (2, 83, 0),
     "location": "View3D > Toolbar > Gpencil > GP clipboard",
     "warning": "",
@@ -93,8 +93,11 @@ def dump_gp_stroke_range(s, sid, l, obj):
     if s.material_index != 0:
         sdic['material_index'] = s.material_index
     
-    if s.draw_cyclic:
+    if getattr(s, 'draw_cyclic', None):# pre-2.92
         sdic['draw_cyclic'] = s.draw_cyclic
+    
+    if getattr(s, 'use_cyclic', None):# from 2.92
+        sdic['use_cyclic'] = s.use_cyclic
     
     if s.uv_scale != 1.0:
         sdic['uv_scale'] = s.uv_scale

@@ -54,6 +54,11 @@ If you want to assign another shortcut :
 ### Changelog:
 
 
+1.3.2:
+
+- fix: attribute error (cyclic attribute name changed in 2.92: `draw_cyclic` -> `use_cyclic`)
+  - Supposed to be still compatible with 2.91 and before (untested).
+
 1.3.1:
 
 - fix: Bug in keymap register that could affect other addon's keymap

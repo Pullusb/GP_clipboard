@@ -12,7 +12,7 @@ The default copy/paste of grease pencil strokes copy strokes using the coordinat
 In some cases it's usefull to copy "In place" (using world coordinate of strokes)   
 The cutting is also more user friendly.  
 
-Cut and Copy works accross multiple layers, Paste is only made on active layer.
+Cut and Copy works across multiple layers, Paste is only made on active layer.
 
 You can also copy entires layers>frames (bake the stroke position if object is animated).
 

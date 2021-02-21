@@ -15,11 +15,12 @@ bl_info = {
     "name": "GP clipboard",
     "description": "Copy/Cut/Paste Grease Pencil strokes to/from OS clipboard across layers and blends",
     "author": "Samuel Bernou",
-    "version": (1, 3, 2),
+    "version": (1, 3, 3),
     "blender": (2, 83, 0),
     "location": "View3D > Toolbar > Gpencil > GP clipboard",
     "warning": "",
     "doc_url": "https://github.com/Pullusb/GP_clipboard",
+    "tracker_url": "https://github.com/Pullusb/GP_clipboard/issues",
     "category": "Object" }
 
 import bpy
@@ -57,6 +58,8 @@ def getMatrix (layer) :
 
     return matrix.copy()
 
+default_pt_uv_fill = Vector((0.5, 0.5))
+
 def dump_gp_point(p, l, obj):
     '''add properties of a given points to a dic and return it'''
     pdic = {}
@@ -74,7 +77,15 @@ def dump_gp_point(p, l, obj):
 
     ## get vertex color (long...)
     if p.vertex_color[:] != (0.0, 0.0, 0.0, 0.0):
-        pdic['vertex_color'] = convertAttr(getattr(p,'vertex_color'))
+        pdic['vertex_color'] = convertAttr(p.vertex_color)
+    
+    ## et UV attr)
+    if p.uv_fill != default_pt_uv_fill:
+        pdic['uv_fill'] = convertAttr(p.uv_fill)
+    if p.uv_factor != 0.0:
+        pdic['uv_factor'] = convertAttr(p.uv_factor)
+    if p.uv_rotation != 0.0:
+        pdic['uv_rotation'] = convertAttr(p.uv_rotation)
 
     return pdic
 
@@ -339,7 +350,9 @@ def add_stroke(s, frame, layer, obj):
                     ns.points[i].co = ob_mat_inv @ ns.points[i].co# invert of object * coordinate
                 else:
                     setattr(ns.points[i], k, v)
-
+    
+    ## Trigger update (starting 2.93, fix drawing problem for fills and UVs)
+    ns.points.update()
 
     ## patch pressure 2
     # ns.points.foreach_set('pressure', pressure_flat_list)

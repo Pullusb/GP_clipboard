@@ -53,6 +53,10 @@ If you want to assign another shortcut :
 
 ### Changelog:
 
+1.3.3:
+
+- fix: Get points uv_properties (used for brushed points)
+- fix: Trigger an update on each pasted strokes that force recalculate uv and fills that are sometimes badly drawn (works in 2.93+)
 
 1.3.2:
 
